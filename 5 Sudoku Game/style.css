@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+*{
+    font-family: 'Roboto', sans-serif;
+}
+.hidden{
+    display: none;
+}
+
+body.dark{
+    background-color: #333333;
+    color:white;
+}
+
+header{
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid red;
+}
+
+h1{
+    font-size: 45pt;
+}
+
+#setup-game{
+    display: flex;
+    justify-content: center;
+}
+
+#setup-game > *{
+    margin-bottom: 10px;
+    padding: 5px 50px;
+    display: flex;
+    align-items: center;
+}
+
+button{
+    justify-self: center;
+
+    background-color:transparent;
+	border-radius:28px;
+	border:2px solid #acbdae;
+	display:inline-block;
+	cursor:pointer;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-shadow:0px 1px 0px #2f6627;
+}
+button:hover {
+	background-color:transparent;
+}
+button:active {
+	position:relative;
+	top:1px;
+}
+
+#timer, #lives{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#game{
+    display: flex;
+    justify-content: center;
+}
+
+#number-container > *{       /*Can also use p in place of * */
+    border: 1px solid black;
+    border-radius: 20%;
+    width: 60px;
+    height: 60px;
+    font-size: 40pt;
+    margin: 5px 0 5px 50px;
+    text-align: center;
+}
+
+#board{
+    padding-top:10px;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    width: 600px;
+    height: 600px;
+}
+
+.tile{
+    border: 1px solid black;
+    width:60px;
+    height: 60px;
+    text-align: center;
+    margin:0px;
+    vertical-align: middle;
+    font-size: 40pt;
+}
+
+p.selected{
+    background-color: lightblue;
+}
+
+p.incorrect{
+    color:red;
+}
+
+/* For 3x3 grids inside the 9x9 grid */
+.rightBorder{
+    border-right: 4px solid black;
+}
+.bottomBorder{
+    border-bottom: 4px solid black;
+}
+
+footer{
+    background-color: lightgray;
+    text-align: center;
+    color:black;    
+}
