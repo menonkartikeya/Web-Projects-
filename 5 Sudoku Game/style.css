@@ -18,7 +18,8 @@ header{
 }
 
 h1{
-    font-size: 45pt;
+    margin: 0;
+    font-size: 35pt;
 }
 
 #setup-game{
@@ -27,10 +28,12 @@ h1{
 }
 
 #setup-game > *{
-    margin-bottom: 10px;
     padding: 5px 50px;
     display: flex;
     align-items: center;
+}
+label, input{
+    cursor: pointer;
 }
 
 button{
@@ -43,7 +46,7 @@ button{
 	cursor:pointer;
 	font-family:Arial;
 	font-size:17px;
-	padding:16px 31px;
+	padding:6px 21px;
 	text-shadow:0px 1px 0px #2f6627;
 }
 button:hover {
@@ -54,30 +57,38 @@ button:active {
 	top:1px;
 }
 
+
+#game{
+    display: flex;
+    justify-content: center;
+    align-items: center ;
+}
+#stats{
+    align-self: center;
+    flex: 1;
+}
 #timer, #lives{
     font-size: 25px;
     font-weight: bold;
     text-align: center;
 }
-
-#game{
-    display: flex;
-    justify-content: center;
+#number-container{
+    flex: 1;
 }
-
 #number-container > *{       /*Can also use p in place of * */
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 20%;
     width: 60px;
     height: 60px;
     font-size: 40pt;
     margin: 5px 0 5px 50px;
     text-align: center;
+    
 }
 
 #board{
     padding-top:10px;
-    margin-top: 10px;
+    margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -113,7 +124,49 @@ p.incorrect{
 }
 
 footer{
+    width: 100%;
     background-color: lightgray;
     text-align: center;
     color:black;    
+}
+
+
+@media only screen and (max-width:950px){
+    #setup-game{
+        display: inline-block;
+    }
+    #setup-game > *{
+        display: inline-block;
+        text-align: center;
+    }
+    button{
+        margin-top: 25px;
+    }
+    #game{
+        display: inline-block;
+        width: 100%;
+        justify-content: center;
+    }
+    #number-container{
+       
+        justify-content: center;
+        display: flex;
+        padding: 0;
+    }
+    #number-container > *{
+        width: 40px;
+        height: 40px;
+        margin: 5px 0 5px 5px;
+        font-size: 25pt;
+    }
+    #board{
+        margin: auto;
+        width: 400px;
+        height: 400px;
+    }
+    .tile{
+        width: 40px;
+        height: 40px;
+        font-size: 25pt;
+    }
 }
