@@ -1,3 +1,3 @@
-Sudoku Game using HTML, CSS, JS.
+The very popular Sudoku Game, I created with HTML, CSS, and JS.
 
-ALGORITHMS like Backtracking is used
+It's completely responsive.
