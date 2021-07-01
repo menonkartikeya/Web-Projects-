@@ -180,22 +180,18 @@ var Sudoku = /** @class */ (function () {
         // }
         // console.info();
      
-     
-
-    console.log(strSol)
-    str="";
-    for(let i=0;i<9;i++){
-        for(let j=0;j<9;j++){
-            if(this.mat[i][j]==0)
-                str+="-";
-            else
-                str+= this.mat[i][j].toString();
+        str="";
+        for(let i=0;i<9;i++){
+            for(let j=0;j<9;j++){
+                if(this.mat[i][j]==0)
+                    str+="-";
+                else
+                    str+= this.mat[i][j].toString();
+            }
         }
-    }
-        
-            
+
         ans = [str, strSol];
-        console.log(ans)
+//         console.log(ans)
     };
     Sudoku.main = function (N,K) {
         var sudoku = new Sudoku(N, K);
