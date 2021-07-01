@@ -1,5 +1,4 @@
-//Load Borads from file or Manually
-
+//Sample test Borads if Want To Load Manually
 var easy = [
     "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
     "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
@@ -14,6 +13,201 @@ var hard = [
 ];
 
 
+/*--------------------------------Sudoku Puzzle Building Logic---------------------------------------*/
+var strSol;
+var str;
+var ans=[]; //our final array of sudoku puzzle and its solution
+
+var Sudoku = /** @class */ (function () {
+    function Sudoku(N, K) {
+        if (this.mat === undefined) {
+            this.mat = null;
+        }
+        if (this.N === undefined) {
+            this.N = 0;
+        }
+        if (this.SRN === undefined) {
+            this.SRN = 0;
+        }
+        if (this.K === undefined) {
+            this.K = 0;
+        }
+        this.N = N;
+        this.K = K;
+        var SRNd = Math.sqrt(N);
+        this.SRN = /* intValue */ (SRNd | 0);
+        this.mat = (function (dims) { var allocate = function (dims) { if (dims.length === 0) {
+            return 0;
+        }
+        else {
+            var array = [];
+            for (var i = 0; i < dims[0]; i++) {
+                array.push(allocate(dims.slice(1)));
+            }
+            return array;
+        } }; return allocate(dims); })([N, N]);
+    }
+    Sudoku.prototype.fillValues = function () {
+        this.fillDiagonal();
+        this.fillRemaining(0, this.SRN);
+
+        strSol="";
+        for(let i=0;i<9;i++)
+            for(let j=0;j<9;j++)
+                strSol+= this.mat[i][j].toString();
+
+        this.removeKDigits();
+    };
+    Sudoku.prototype.fillDiagonal = function () {
+        for (var i = 0; i < this.N; i = i + this.SRN) {
+            this.fillBox(i, i);
+        }
+    };
+    Sudoku.prototype.unUsedInBox = function (rowStart, colStart, num) {
+        for (var i = 0; i < this.SRN; i++) {
+            for (var j = 0; j < this.SRN; j++) {
+                if (this.mat[rowStart + i][colStart + j] === num)
+                    return false;
+                ;
+            }
+            ;
+        }
+        return true;
+    };
+    Sudoku.prototype.fillBox = function (row, col) {
+        var num;
+        for (var i = 0; i < this.SRN; i++) {
+            {
+                for (var j = 0; j < this.SRN; j++) {
+                    {
+                        do {
+                            {
+                                num = this.randomGenerator(this.N);
+                            }
+                        } while ((!this.unUsedInBox(row, col, num)));
+                        this.mat[row + i][col + j] = num;
+                    }
+                    ;
+                }
+            }
+            ;
+        }
+    };
+    Sudoku.prototype.randomGenerator = function (num) {
+        return (Math.floor((Math.random() * num + 1)) | 0);
+    };
+    Sudoku.prototype.CheckIfSafe = function (i, j, num) {
+        return (this.unUsedInRow(i, num) && this.unUsedInCol(j, num) && this.unUsedInBox(i - i % this.SRN, j - j % this.SRN, num));
+    };
+    Sudoku.prototype.unUsedInRow = function (i, num) {
+        for (var j = 0; j < this.N; j++) {
+            if (this.mat[i][j] === num)
+                return false;
+            ;
+        }
+        return true;
+    };
+    Sudoku.prototype.unUsedInCol = function (j, num) {
+        for (var i = 0; i < this.N; i++) {
+            if (this.mat[i][j] === num)
+                return false;
+            ;
+        }
+        return true;
+    };
+    Sudoku.prototype.fillRemaining = function (i, j) {
+        if (j >= this.N && i < this.N - 1) {
+            i = i + 1;
+            j = 0;
+        }
+        if (i >= this.N && j >= this.N)
+            return true;
+        if (i < this.SRN) {
+            if (j < this.SRN)
+                j = this.SRN;
+        }
+        else if (i < this.N - this.SRN) {
+            if (j === (((i / this.SRN | 0)) | 0) * this.SRN)
+                j = j + this.SRN;
+        }
+        else {
+            if (j === this.N - this.SRN) {
+                i = i + 1;
+                j = 0;
+                if (i >= this.N)
+                    return true;
+            }
+        }
+        for (var num = 1; num <= this.N; num++) {
+            {
+                if (this.CheckIfSafe(i, j, num)) {
+                    this.mat[i][j] = num;
+                    if (this.fillRemaining(i, j + 1))
+                        return true;
+                    this.mat[i][j] = 0;
+                }
+            }
+            ;
+        }
+        return false;
+    };
+    Sudoku.prototype.removeKDigits = function () {
+        var count = this.K;
+        while ((count !== 0)) {
+            {
+                var cellId = this.randomGenerator(this.N * this.N) - 1;
+                var i = ((cellId / this.N | 0));
+                var j = cellId % 9;
+                if (j !== 0)
+                    j = j - 1;
+                if (this.mat[i][j] !== 0) {
+                    count--;
+                    this.mat[i][j] = 0;
+                }
+            }
+        }
+        ;
+    };
+    Sudoku.prototype.printSudoku = function () {
+        // for (var i = 0; i < this.N; i++) {
+        //     {
+        //         for (var j = 0; j < this.N; j++) {
+        //             console.info(this.mat[i][j] + " ");
+        //         }
+        //         console.info();
+        //     }
+        //     ;
+        // }
+        // console.info();
+     
+     
+
+    console.log(strSol)
+    str="";
+    for(let i=0;i<9;i++){
+        for(let j=0;j<9;j++){
+            if(this.mat[i][j]==0)
+                str+="-";
+            else
+                str+= this.mat[i][j].toString();
+        }
+    }
+        
+            
+        ans = [str, strSol];
+        console.log(ans)
+    };
+    Sudoku.main = function (N,K) {
+        var sudoku = new Sudoku(N, K);
+        sudoku.fillValues();
+        sudoku.printSudoku();
+    };
+    return Sudoku;
+}());
+Sudoku["__class"] = "Sudoku";
+
+
+/*----------------------------------------Logic of Game Frontend Starts---------------------- */
 
 //Game Variables
 var timer;
@@ -90,9 +284,24 @@ function numberContainer(){
 
     }
 }
-
+export var K 
 function startGame(){
-    // alert('Start!!!');        
+    // alert('Start!!!');
+
+    //Generate puzzle based on difficulty
+    if(id('diff-1').checked){
+        Sudoku.main(9,30);                      //Generating sudoku puzzle called
+        easy = ans;
+    }
+    else if (id('diff-2').checked){
+        Sudoku.main(9,45);                      //Generating sudoku puzzle called
+        medium = ans;
+    }
+    else{
+        Sudoku.main(9,55);                      //Generating sudoku puzzle called
+        hard = ans;
+    }
+        
 
     //Choose Board difficulty
     let board;
