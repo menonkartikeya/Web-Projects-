@@ -526,7 +526,7 @@ window.onload = function() {
   };
   sprite = new Image();
   sprite.src =
-    "../assets/images/harrypotter.png" +
+    "assets/images/harrypotter.png" +
     "?" +
     new Date().getTime();
   sprite.setAttribute("crossOrigin", " ");
@@ -538,7 +538,7 @@ window.onload = function() {
   };
 
   finishSprite = new Image();
-  finishSprite.src = "../assets/images/victory.png"+
+  finishSprite.src = "assets/images/victory.png"+
   "?" +
   new Date().getTime();
   finishSprite.setAttribute("crossOrigin", " ");
