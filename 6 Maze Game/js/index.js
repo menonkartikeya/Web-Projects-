@@ -1,49 +1,96 @@
-function rand(max) {
-  return Math.floor(Math.random() * max);
-}
 
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// -----------------------------------Toggle Music Button-------------------------------------
+const musicSound = new Audio('assets/music/HarryPotterMainThemeMusicHedwigsTheme.mp3');
+// const mazeSound = new Audio('assets/music/TheMaze.mp3');
+function musicToggle() {
+  var m = document.getElementById("musicOnOff");
+  if(m.classList.contains("MUSICON")) {
+    m.value = "🔇";
+    musicSound.pause();
   }
-  return a;
-}
-
-function changeBrightness(factor, sprite) {
-  var virtCanvas = document.createElement("canvas");
-  virtCanvas.width = 500;
-  virtCanvas.height = 500;
-  var context = virtCanvas.getContext("2d");
-  context.drawImage(sprite, 0, 0, 500, 500);
-
-  var imgData = context.getImageData(0, 0, 500, 500);
-
-  for (let i = 0; i < imgData.data.length; i += 4) {
-    imgData.data[i] = imgData.data[i] * factor;
-    imgData.data[i + 1] = imgData.data[i + 1] * factor;
-    imgData.data[i + 2] = imgData.data[i + 2] * factor;
+  else{
+      m.value = "🔊";
+      musicSound.play();
   }
-  context.putImageData(imgData, 0, 0);
-
-  var spriteOutput = new Image();
-  spriteOutput.src = virtCanvas.toDataURL();
-  virtCanvas.remove();
-  return spriteOutput;
+  m.classList.toggle("MUSICON");
 }
 
-function displayVictoryMess(moves) {
-  document.getElementById("moves").innerHTML = "You Moved " + moves + " Steps.";
-  toggleVisablity("Message-Container");  
-}
+//------------------------------------On load (start-up)-------------------------------------
 
-function toggleVisablity(id) {
-  if (document.getElementById(id).style.visibility == "visible") {
-    document.getElementById(id).style.visibility = "hidden";
+var mazeCanvas = document.getElementById("mazeCanvas");
+var ctx = mazeCanvas.getContext("2d");
+var harry;
+var finishHarry;
+var maze, draw, player;
+var cellSize;
+var difficulty;
+
+window.onload = function() {
+  
+  let viewWidth = $("#view").width();
+  let viewHeight = $("#view").height();
+  if (viewHeight < viewWidth) {
+    ctx.canvas.width = viewHeight - viewHeight / 100;
+    ctx.canvas.height = viewHeight - viewHeight / 100;
   } else {
-    document.getElementById(id).style.visibility = "visible";
+    ctx.canvas.width = viewWidth - viewWidth / 100;
+    ctx.canvas.height = viewWidth - viewWidth / 100;
+  }
+
+  //Load and edit harry
+  var completeOne = false;
+  var completeTwo = false;
+  var isComplete = () => {
+    if(completeOne === true && completeTwo === true)
+       {
+         console.log("Runs");
+         setTimeout(function(){
+           makeMaze();
+         }, 500);         
+       }
+  };
+  harry = new Image();
+  harry.src =
+    "../assets/images/harrypotter.png" +"?"+new Date().getTime();
+  harry.setAttribute("crossOrigin", " ");
+  harry.onload = function() {
+    harry = changeBrightness(1.2, harry);
+    completeOne = true;
+    console.log(completeOne);
+    isComplete();
+  };
+
+  finishHarry = new Image();
+  finishHarry.src = "../assets/images/victory.png"+"?"+new Date().getTime();
+  finishHarry.setAttribute("crossOrigin", " ");
+  finishHarry.onload = function() {
+    finishHarry = changeBrightness(1.1, finishHarry);
+    completeTwo = true;
+    console.log(completeTwo);
+    isComplete();
+  };
+  
+};
+
+
+function makeMaze() {
+
+  if (player != undefined) {
+    player.unbindKeyDown();
+    player = null;
+  }
+  var e = document.getElementById("diffSelect");
+  difficulty = e.options[e.selectedIndex].value;
+  cellSize = mazeCanvas.width / difficulty;
+  maze = new Maze(difficulty, difficulty);
+  draw = new DrawMaze(maze, ctx, cellSize, finishHarry);
+  player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, harry);
+  if (document.getElementById("mazeContainer").style.opacity < "100") {
+    document.getElementById("mazeContainer").style.opacity = "100";
   }
 }
+
+// -----------------------------------Maze Making Logic -------------------------------------
 
 function Maze(Width, Height) {
   var mazeMap;
@@ -210,7 +257,7 @@ function Maze(Width, Height) {
   defineMaze();
 }
 
-function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
+function DrawMaze(Maze, ctx, cellsize, endHarry = null) {
   var map = Maze.map();
   var cellSize = cellsize;
   var drawEndMethod;
@@ -289,16 +336,16 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
     }
   }
 
-  function drawEndSprite() {
+  function drawEndHarry() {
     var offsetLeft = cellSize / 50;
     var offsetRight = cellSize / 25;
     var coord = Maze.endCoord();
     ctx.drawImage(
-      endSprite,
+      endHarry,
       2,
       2,
-      endSprite.width,
-      endSprite.height,
+      endHarry.width,
+      endHarry.height,
       coord.x * cellSize + offsetLeft,
       coord.y * cellSize + offsetLeft,
       cellSize - offsetRight,
@@ -311,8 +358,8 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
     ctx.clearRect(0, 0, canvasSize, canvasSize);
   }
 
-  if (endSprite != null) {
-    drawEndMethod = drawEndSprite;
+  if (endHarry != null) {
+    drawEndMethod = drawEndHarry;
   } else {
     drawEndMethod = drawEndFlag;
   }
@@ -321,13 +368,13 @@ function DrawMaze(Maze, ctx, cellsize, endSprite = null) {
   drawEndMethod();
 }
 
-function Player(maze, c, _cellsize, onComplete, sprite = null) {
+function Player(maze, c, _cellsize, onComplete, harry = null) {
   var ctx = c.getContext("2d");
-  var drawSprite;
+  var drawHarry;
   var moves = 0;
-  drawSprite = drawSpriteCircle;
-  if (sprite != null) {
-    drawSprite = drawSpriteImg;
+  drawHarry = drawHarryCircle;
+  if (harry != null) {
+    drawHarry = drawHarryImg;
   }
   var player = this;
   var map = maze.map();
@@ -340,10 +387,10 @@ function Player(maze, c, _cellsize, onComplete, sprite = null) {
 
   this.redrawPlayer = function(_cellsize) {
     cellSize = _cellsize;
-    drawSpriteImg(cellCoords);
+    drawHarryImg(cellCoords);
   };
 
-  function drawSpriteCircle(coord) {
+  function drawHarryCircle(coord) {
     ctx.beginPath();
     ctx.fillStyle = "yellow";
     ctx.arc(
@@ -360,15 +407,15 @@ function Player(maze, c, _cellsize, onComplete, sprite = null) {
     }
   }
 
-  function drawSpriteImg(coord) {
+  function drawHarryImg(coord) {
     var offsetLeft = cellSize / 50;
     var offsetRight = cellSize / 25;
     ctx.drawImage(
-      sprite,
+      harry,
       0,
       0,
-      sprite.width,
-      sprite.height,
+      harry.width,
+      harry.height,
       coord.x * cellSize + offsetLeft,
       coord.y * cellSize + offsetLeft,
       cellSize - offsetRight,
@@ -380,7 +427,7 @@ function Player(maze, c, _cellsize, onComplete, sprite = null) {
     }
   }
 
-  function removeSprite(coord) {
+  function removeHarry(coord) {
     var offsetLeft = cellSize / 50;
     var offsetRight = cellSize / 25;
     ctx.clearRect(
@@ -398,45 +445,45 @@ function Player(maze, c, _cellsize, onComplete, sprite = null) {
       case 65:
       case 37: // west
         if (cell.w == true) {
-          removeSprite(cellCoords);
+          removeHarry(cellCoords);
           cellCoords = {
             x: cellCoords.x - 1,
             y: cellCoords.y
           };
-          drawSprite(cellCoords);
+          drawHarry(cellCoords);
         }
         break;
       case 87:
       case 38: // north
         if (cell.n == true) {
-          removeSprite(cellCoords);
+          removeHarry(cellCoords);
           cellCoords = {
             x: cellCoords.x,
             y: cellCoords.y - 1
           };
-          drawSprite(cellCoords);
+          drawHarry(cellCoords);
         }
         break;
       case 68:
       case 39: // east
         if (cell.e == true) {
-          removeSprite(cellCoords);
+          removeHarry(cellCoords);
           cellCoords = {
             x: cellCoords.x + 1,
             y: cellCoords.y
           };
-          drawSprite(cellCoords);
+          drawHarry(cellCoords);
         }
         break;
       case 83:
       case 40: // south
         if (cell.s == true) {
-          removeSprite(cellCoords);
+          removeHarry(cellCoords);
           cellCoords = {
             x: cellCoords.x,
             y: cellCoords.y + 1
           };
-          drawSprite(cellCoords);
+          drawHarry(cellCoords);
         }
         break;
     }
@@ -449,10 +496,6 @@ function Player(maze, c, _cellsize, onComplete, sprite = null) {
       swipe: function(
         event,
         direction,
-        distance,
-        duration,
-        fingerCount,
-        fingerData
       ) {
         console.log(direction);
         switch (direction) {
@@ -487,71 +530,57 @@ function Player(maze, c, _cellsize, onComplete, sprite = null) {
     $("#view").swipe("destroy");
   };
 
-  drawSprite(maze.startCoord());
+  drawHarry(maze.startCoord());
 
   this.bindKeyDown();
 }
 
-var mazeCanvas = document.getElementById("mazeCanvas");
-var ctx = mazeCanvas.getContext("2d");
-var sprite;
-var finishSprite;
-var maze, draw, player;
-var cellSize;
-var difficulty;
-// sprite.src = 'media/sprite.png';
 
-window.onload = function() {
-  let viewWidth = $("#view").width();
-  let viewHeight = $("#view").height();
-  if (viewHeight < viewWidth) {
-    ctx.canvas.width = viewHeight - viewHeight / 100;
-    ctx.canvas.height = viewHeight - viewHeight / 100;
-  } else {
-    ctx.canvas.width = viewWidth - viewWidth / 100;
-    ctx.canvas.height = viewWidth - viewWidth / 100;
+//-------------------------------------Utility Functions------------------------------------
+function rand(max) {
+  return Math.floor(Math.random() * max);
+}
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
 
-  //Load and edit sprites
-  var completeOne = false;
-  var completeTwo = false;
-  var isComplete = () => {
-    if(completeOne === true && completeTwo === true)
-       {
-         console.log("Runs");
-         setTimeout(function(){
-           makeMaze();
-         }, 500);         
-       }
-  };
-  sprite = new Image();
-  sprite.src =
-    "assets/images/harrypotter.png" +
-    "?" +
-    new Date().getTime();
-  sprite.setAttribute("crossOrigin", " ");
-  sprite.onload = function() {
-    sprite = changeBrightness(1.2, sprite);
-    completeOne = true;
-    console.log(completeOne);
-    isComplete();
-  };
+function changeBrightness(factor, harry) {
+  var virtCanvas = document.createElement("canvas");
+  virtCanvas.width = 500;
+  virtCanvas.height = 500;
+  var context = virtCanvas.getContext("2d");
+  context.drawImage(harry, 0, 0, 500, 500);
 
-  finishSprite = new Image();
-  finishSprite.src = "assets/images/victory.png"+
-  "?" +
-  new Date().getTime();
-  finishSprite.setAttribute("crossOrigin", " ");
-  finishSprite.onload = function() {
-    finishSprite = changeBrightness(1.1, finishSprite);
-    completeTwo = true;
-    console.log(completeTwo);
-    isComplete();
-  };
-  
-};
+  var imgData = context.getImageData(0, 0, 500, 500);
 
-window.onresize = function() {
+  for (let i = 0; i < imgData.data.length; i += 4) {
+    imgData.data[i] = imgData.data[i] * factor;
+    imgData.data[i + 1] = imgData.data[i + 1] * factor;
+    imgData.data[i + 2] = imgData.data[i + 2] * factor;
+  }
+  context.putImageData(imgData, 0, 0);
+
+  var harryOutput = new Image();
+  harryOutput.src = virtCanvas.toDataURL();
+  virtCanvas.remove();
+  return harryOutput;
+}
+
+function toggleVisablity(id) {
+  if (document.getElementById(id).style.visibility == "visible") {
+    document.getElementById(id).style.visibility = "hidden";
+  } else {
+    document.getElementById(id).style.visibility = "visible";
+  }
+}
+
+
+window.onresize = function() {    //VIMP, when window is resized
   let viewWidth = $("#view").width();
   let viewHeight = $("#view").height();
   if (viewHeight < viewWidth) {
@@ -568,19 +597,24 @@ window.onresize = function() {
   }
 };
 
-function makeMaze() {
-  //document.getElementById("mazeCanvas").classList.add("border");
-  if (player != undefined) {
-    player.unbindKeyDown();
-    player = null;
-  }
-  var e = document.getElementById("diffSelect");
-  difficulty = e.options[e.selectedIndex].value;
-  cellSize = mazeCanvas.width / difficulty;
-  maze = new Maze(difficulty, difficulty);
-  draw = new DrawMaze(maze, ctx, cellSize, finishSprite);
-  player = new Player(maze, mazeCanvas, cellSize, displayVictoryMess, sprite);
-  if (document.getElementById("mazeContainer").style.opacity < "100") {
-    document.getElementById("mazeContainer").style.opacity = "100";
+function setPoints() {
+  switch(difficulty) {
+    case '10': return 100;
+    case '15': return 200;
+    case '25': return 300;
+    case '38': return 500;
   }
 }
+
+//--------------------------------------------On finishing------------------------------------
+function displayVictoryMess(moves) {
+  var points =  setPoints();
+  console.log(points)
+  document.getElementById("moves").innerHTML = "You Moved " + moves + " Steps.";
+  document.getElementById("wonMessage").innerHTML = points + " Points To Gryffindor!";
+  toggleVisablity("Message-Container");  
+}
+
+
+
+

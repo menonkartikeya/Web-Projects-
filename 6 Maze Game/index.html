@@ -23,9 +23,9 @@
       <div id="Message-Container">
         <div id="message">
           <h1>Congratulations!</h1>
-          <p>You are done.</p>
+          <p id="wonMessage"></p>
           <p id="moves"></p>
-          <input id="okBtn" type="button" onclick="toggleVisablity('Message-Container')" value="Cool!" />
+          <input id="okBtn" type="button" onclick="toggleVisablity('Message-Container')" value="Close" />
         </div>
       </div>
       <div id="menu">
@@ -38,6 +38,7 @@
                 </select>
         </div>
         <input id="startMazeBtn" type="button" onclick="makeMaze()" value="Start" />
+        <input type="button" id="musicOnOff" onclick="musicToggle()" value="🔇" />
       </div>
       <div id="view">
         <div id="mazeContainer">
