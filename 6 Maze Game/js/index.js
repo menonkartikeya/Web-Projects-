@@ -50,7 +50,7 @@ window.onload = function() {
        }
   };
   harry = new Image();
-  harry.src = "../assets/images/harrypotter.png" +"?"+new Date().getTime();
+  harry.src = "../6 Maze Game/assets/images/harrypotter.png" +"?"+new Date().getTime();
   harry.setAttribute("crossOrigin", " ");
   harry.onload = function() {
     harry = changeBrightness(1.2, harry);
@@ -60,7 +60,7 @@ window.onload = function() {
   };
 
   finishHarry = new Image();
-  finishHarry.src = "../assets/images/victory.png"+"?"+new Date().getTime();
+  finishHarry.src = "../6 Maze Game/assets/images/victory.png"+"?"+new Date().getTime();
   finishHarry.setAttribute("crossOrigin", " ");
   finishHarry.onload = function() {
     finishHarry = changeBrightness(1.1, finishHarry);
