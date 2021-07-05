@@ -1,7 +1,7 @@
 Harry Potter themed Maze game.
 Uses backtracking recursions to generate pseudo-random puzzles everytime.
 
-
+Try it out: https://menonkartikeya.github.io/Web-Projects-/6%20Maze%20Game/
 ------------------------------------------------------------------------------------------
 
 A Simple maze game that uses recursive back tracking to generate a new random Maze every time. 
