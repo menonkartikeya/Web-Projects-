@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+*{
+    font-family: 'Roboto', sans-serif;
+}
+.hidden{
+    display: none;
+}
+
+body.dark{
+    background-color: #333333;
+    color:white;
+}
+
+header{
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid red;
+}
+
+h1{
+    margin: 0;
+    font-size: 35pt;
+}
+
+#setup-game{
+    display: flex;
+    justify-content: center;
+}
+
+#setup-game > *{
+    padding: 5px 50px;
+    display: flex;
+    align-items: center;
+}
+label, input{
+    cursor: pointer;
+    padding: 15px;
+}
+
+button{
+  justify-self: center;
+
+  background-color:transparent;
+	border-radius:28px;
+	border:2px solid #acbdae;
+	display:inline-block;
+	cursor:pointer;
+	font-family:Arial;
+	font-size:17px;
+	padding:6px 21px;
+	text-shadow:0px 1px 0px #2f6627;
+}
+button:hover {
+	background-color:transparent;
+}
+button:active {
+	position:relative;
+	top:1px;
+}
+
+#game{
+    display: flex;
+    justify-content: center;
+    align-items: center ;
+}
+
+
+#board{
+    padding-top:10px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    width: 600px;
+    height: 500px;
+}
+
+.tile{
+    border: 1px solid black;
+    width:150px;
+    height: 150px;
+    text-align: center;
+    margin:0px;
+    vertical-align: middle;
+    font-size: 60pt;
+}
+
+
+#print {
+  text-align: center;
+  font-size: 20px;
+}
+
+p.selected{
+    background-color: lightblue;
+}
+
+p.incorrect{
+    color:red;
+}
+
+/* For 3x3 grids inside the 9x9 grid */
+.rightBorder{
+    border-right: 4px solid black;
+}
+.bottomBorder{
+    border-bottom: 4px solid black;
+}
+
+footer{
+    width: 100%;
+    background-color: lightgray;
+    text-align: center;
+    color:black;    
+}
+
+@media only screen and (max-width:950px){
+    #setup-game{
+        display: inline-block;
+    }
+    #setup-game > *{
+        display: inline-block;
+        text-align: center;
+    }
+    button{
+        margin-top: 25px;
+    }
+    #game{
+        display: inline-block;
+        width: 100%;
+        justify-content: center;
+    }
+    #board{
+        margin: auto;
+        width: 400px;
+        height: 400px;
+    }
+    .tile{
+        width: 40px;
+        height: 40px;
+        font-size: 25pt;
+    }
+}

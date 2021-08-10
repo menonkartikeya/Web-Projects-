@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+    <title>Tic Tac Toe K</title>
+</head>
+
+<body>
+    <header>
+        <h1>Tic Tac Toe </h1>
+        <div id="setup-game">
+            <div id="players">
+                <h3>Choose Players:</h3>
+                <label for="player-1"><input type="radio" id="player-1" name="players" value="one" > 1 Player <br><small>Play with AI</small></label>
+                <label for="player-2"><input type="radio" id="player-2" name="players" value="two" checked> 2 Players <br><small>Play with your friend</small></label>
+            </div>
+            <div id="theme">
+                <h3>Choose Theme:</h3>
+                <label for="theme-1"><input type="radio" id="theme-1" name="theme" value="light">Light</label>
+                <label for="theme-2"><input type="radio" id="theme-2" name="theme" value="dark" checked>Dark</label>
+            </div>
+        </div>
+        <button id="start-btn">New Game</button>
+    </header>
+
+    
+    <p id="print"></p>
+    <div id="game">
+        <div id="board"></div>
+    </div>
+
+    <footer id="foot">
+        <p>Made By Kartikeya Menon</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
