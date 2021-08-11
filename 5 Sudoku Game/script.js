@@ -256,7 +256,8 @@ window.onload =()=>{
                         break;
         }
       }, false);
-      
+      id("pausebtn").addEventListener('click', pauseGame);
+      id("continuebtn").addEventListener('click', play);
 }
 
 function numberContainer(){
@@ -318,7 +319,10 @@ function startGame(){
     id('lives').textContent = "Lives Remaining: 3";
     id("lives").style.color="inherit";
 
-    id("foot").scrollIntoView({ behavior: 'smooth', block: 'end' });
+    id("pausebtn").textContent="| |";
+    id("pausebtn").style.color="inherit";
+
+    window.scrollTo(0,id("head").scrollHeight);
     
     //Create Board based on difficulty 
     generateBoard(board);
@@ -326,10 +330,14 @@ function startGame(){
     //starts the timer
     startTimer();
 
-    //Show number container
+    //Show number container & pause button
     id("number-container").classList.remove("hidden");
+    id("pausebtn").classList.remove("hidden");
+
+    play();
 }
 
+var isPaused=false;
 function startTimer(){
     //Set time remaining based on input
     if(id("time-1").checked)
@@ -344,12 +352,13 @@ function startTimer(){
 
     //sets timer to update every second
     timer = setInterval(()=>{
-        timeRemaining--;
-
-        //If no time remaining, end the game
-        if(timeRemaining === 0)
-            endGame();
-        id("timer").textContent = timeConversion(timeRemaining);
+        if(!isPaused) {
+            timeRemaining--;
+            //If no time remaining, end the game
+            if(timeRemaining === 0)
+                endGame();
+            id("timer").textContent = timeConversion(timeRemaining);
+        }
     },1000)
 }
 
@@ -509,12 +518,13 @@ function endGame(){
     if(lives === 0 || timeRemaining === 0){
         id("lives").style.color="red";
         id("lives").textContent = "You Lost!!";
+        id("pausebtn").textContent = "View Solution";
     }
     else{
         id("lives").style.color="blue";
         id("lives").textContent = "Congratulations! You Won!";
+        id("pausebtn").classList.add("hidden");
     }
-    
     //Make cursors as not-allowed for tiles and number-container 
     for(let i=0; i<qsa(".tile").length; i++)
         qsa(".tile")[i].style.cursor="not-allowed";
@@ -571,15 +581,77 @@ function clearPrevious(){
     selectedNum =null;
 }
 
+var modal = id("myModal");
+function pauseGame(){
+    var b = id("pausebtn");
+    if(b.textContent=="View Solution"){
+        showSolution();
+    }
+    else if(!b.classList.contains("paused")){
+        b.classList.add('paused');
+        isPaused = true;
+        id("board").style.visibility = "hidden";
+        modal.style.display = "block";
+        id("pausebtn").textContent="▷";
+    }
+}
+
+function play(){
+    id("board").style.visibility = "visible";
+    id("pausebtn").classList.remove('paused');
+    isPaused = false;
+    modal.style.display = "none";
+
+    id("pausebtn").textContent="| |";
+}
+id("quitbtn").onclick = function() {
+    if (confirm('Are you sure you want to quit the game and see the solution?')) {
+        console.log('Quitter!');
+        id("board").style.visibility = "visible";
+        modal.style.display = "none";
+        lives=0;
+        endGame();
+        showSolution();
+    }
+    else {
+        console.log("Don't quit! By mistake");
+    }
+}
+
+function showSolution(){
+    let tiles = qsa(".tile");
+
+    //set solution based on difficulty selection
+    let solution;
+    if(id("diff-1").checked)
+        solution = easy[1];
+    else if (id('diff-2').checked)
+        solution = medium[1];
+    else
+        solution = hard[1];
+        
+    for(let i=0; i<tiles.length; i++)  {
+        if(tiles[i].textContent==''){
+            tiles[i].textContent = solution.charAt(i);
+            tiles[i].style.color = "skyblue";
+        }                    
+    }
+}
 
 function changeThemeLight(){    
     qs("body").classList.remove("dark");
     document.getElementsByTagName("button")[0].style.color="black";
+    qs(".modal-content").classList.add("dark");
+    id("continuebtn").style.color="white";
+    id("quitbtn").style.color="white";
 }
 
 function changeThemeDark(){
     qs("body").classList.add("dark");
     document.getElementsByTagName("button")[0].style.color="white";
+    qs(".modal-content").classList.remove("dark");
+    id("continuebtn").style.color="black";
+    id("quitbtn").style.color="black";
 }
 
 //Helper functions
