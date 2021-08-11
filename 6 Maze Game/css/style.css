@@ -9,6 +9,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: auto;
 }
 
 #mazeContainer {
@@ -100,8 +101,8 @@ select:focus {
 #page {
   font-family: "Segoe UI", Arial, sans-serif;
   text-align: center;
-  height: auto;
   width: auto;
+  height: 110%;
   margin: auto;
 }
 #page #menu {
@@ -150,6 +151,14 @@ select:focus {
   /* -webkit-animation: Gradient 15s ease infinite;
           animation: Gradient 15s ease infinite; */
 }
+
+footer{
+  width: 100%;
+  background-color: lightgray;
+  text-align: center;
+  color:black;    
+}
+
 
 @-webkit-keyframes Gradient {
   0% {
