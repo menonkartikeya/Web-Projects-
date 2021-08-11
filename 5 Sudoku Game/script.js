@@ -13,7 +13,7 @@ var hard = [
 ];
 
 
-/*--------------------------------Sudoku Puzzle Building Logic---------------------------------------*/
+/*--------------------------------Sudoku Building Logic---------------------------------------*/
 var strSol;
 var str;
 var ans=[]; //our final array of sudoku puzzle and its solution
@@ -180,18 +180,22 @@ var Sudoku = /** @class */ (function () {
         // }
         // console.info();
      
-        str="";
-        for(let i=0;i<9;i++){
-            for(let j=0;j<9;j++){
-                if(this.mat[i][j]==0)
-                    str+="-";
-                else
-                    str+= this.mat[i][j].toString();
-            }
-        }
+     
 
+    console.log(strSol)
+    str="";
+    for(let i=0;i<9;i++){
+        for(let j=0;j<9;j++){
+            if(this.mat[i][j]==0)
+                str+="-";
+            else
+                str+= this.mat[i][j].toString();
+        }
+    }
+        
+            
         ans = [str, strSol];
-//         console.log(ans)
+        console.log(ans)
     };
     Sudoku.main = function (N,K) {
         var sudoku = new Sudoku(N, K);
@@ -314,9 +318,11 @@ function startGame(){
     id('lives').textContent = "Lives Remaining: 3";
     id("lives").style.color="inherit";
 
+    id("foot").scrollIntoView({ behavior: 'smooth', block: 'end' });
+    
     //Create Board based on difficulty 
     generateBoard(board);
-
+    
     //starts the timer
     startTimer();
 
