@@ -9,7 +9,7 @@
     <title>Sudoku Puzzle</title>
 </head>
 <body >
-    <header>
+    <header id="head">
         <h1>Sudoku</h1>
         <div id="setup-game">
             <div id="difficulty">
@@ -40,6 +40,7 @@
         <div id="stats">
             <p id="timer"></p>
             <p id="lives"></p>
+            <button id="pausebtn" class="hidden"></button>
         </div>
         <div id="board"></div>
         <div id="number-container" class="hidden">
@@ -55,6 +56,14 @@
         </div>
     </div>
 
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <button id="continuebtn">Continue ▷</button>
+            <br><br>
+            <button id="quitbtn">Quit & View Solution</button>
+        </div>
+      
+      </div>
 
     <footer id="foot">
         <p>Made By Kartikeya Menon</p>
