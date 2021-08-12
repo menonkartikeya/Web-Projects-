@@ -59,19 +59,26 @@
 #highScoreBox{
     position: absolute;
     top: 57px;
-    right: 100px;
+    right: 80px;
     font-size: 39px;
+    font-weight: bold;
+    font-family: 'New Tegomin', serif;
+}
+#LevelForhighScoreBox{
+    position: absolute;
+    top: 100px;
+    right: 140px;
+    font-size: 15px;
     font-weight: bold;
     font-family: 'New Tegomin', serif;
 }
 
 
-
-  /* Level Select Button */
-  .gameButtons{
-    padding: 10px;
-    margin:auto;
-    box-shadow: 0px 10px 14px -7px #3e7327;
+/* Level Select Button */
+.gameButtons{
+  padding: 10px;
+  margin:auto;
+  box-shadow: 0px 10px 14px -7px #3e7327;
 	background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
 	background-color:#77b55a;
 	border-radius:4px;
@@ -141,6 +148,23 @@
   }
 
 
-
-
+  
+/* Responsive for Phones */
+@media only screen and (max-device-width: 950px){
+  .body{
+    background-size: cover;
+    min-height: 95vh;
+  }
+  #LevelForhighScoreBox{
+    right: 155px;
+  }
+  #gameSettings{
+    position: absolute;
+    top: 80vh;
+    left:100px;
+  }
+  #musicOnOff{
+    margin-bottom: 40px;
+  }
+}
 
