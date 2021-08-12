@@ -13,37 +13,36 @@
 
         <!-- The Modal -->
         <div id="settingsModal" class="modal">
-
-        <!-- Modal content -->
-        
-        <span class="close">&times;</span>
-        <div class="modal-content">
-            
-            <button id="musicOnOff" class="gameButtons" >🎵 Music</button>
-            <select id="selectLevel" class="gameButtons">
-                <option value="1">Level : 1 </option>
-                <option value="2">Level : 2 </option>
-                <option value="3">Level : 3 </option>
-                <option value="4">Level : 4 </option>
-                <option value="5">Level : 5 </option>
-                <option value="6">Level : 6 </option>
-                <option value="7">Level : 7 </option>
-                <option value="8">Level : 8 </option>
-                <option value="9">Level : 9 </option>
-                <option value="10">Level : 10 </option>
-            </select>
-            
-
-        </div>
+            <!-- Modal content -->
+            <span class="close">&times;</span>
+            <div class="modal-content">
+                <button id="musicOnOff" class="gameButtons" >🎵 Music</button>
+                <select id="selectLevel" class="gameButtons">
+                    <option value="1">Level : 1 </option>
+                    <option value="2">Level : 2 </option>
+                    <option value="3">Level : 3 </option>
+                    <option value="4">Level : 4 </option>
+                    <option value="5">Level : 5 </option>
+                    <option value="6">Level : 6 </option>
+                    <option value="7">Level : 7 </option>
+                    <option value="8">Level : 8 </option>
+                    <option value="9">Level : 9 </option>
+                    <option value="10">Level : 10 </option>
+                </select>                
+            </div>
         </div>
         
         
         <div id="scoreBox">Score: 0</div>
         <div id="highScoreBox">High Score: 0</div>
+        <div id="LevelForhighScoreBox"></div>
         <div id="board"></div>
 
     </div>
-    <script src="js/index.js"></script>
+    
+    
+    <script src="js/index.js"></script> 
+    <script src="js/swiped-events.js"></script>
 </body>
 
 </html>
