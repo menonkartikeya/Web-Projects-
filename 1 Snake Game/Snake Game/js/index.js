@@ -14,14 +14,14 @@ let snakeArr = [            //This is an array
 ]
 let food = {x: 6, y:7};   //Not an array, only one particle
 let score=0;
-
+var level = "1";
 
 //Game Functions:
 
 
 function setLevel(){
-    var x = document.getElementById("selectLevel").value;
-    switch(x){
+    level = document.getElementById("selectLevel").value;
+    switch(level){
         case "1": speed=2;
                 break;
         case "2": speed=3;
@@ -113,8 +113,13 @@ function gameEngine(){
 
         if(score>highscoreval){
             highscoreval = score;
+            levelForhighscoreVal=level;
             localStorage.setItem("highscore", JSON.stringify(highscoreval));
-            highScoreBox.innerHTML = "High Score: " +highscoreval;
+            localStorage.setItem("levelForhighscore", JSON.stringify(levelForhighscoreVal));
+
+            highScoreBox.innerHTML = "High Score: " + highscoreval;
+            LevelForhighScoreBox.innerHTML = "For Level : "+ levelForhighscoreVal;
+            console.log(level)
         }
 
         snakeArr.unshift({x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y})//unshift adds element at start of the array
@@ -159,70 +164,130 @@ function gameEngine(){
 
 //Game function ends
 
-//Main Logic starts here:
+//Main Logic starts here:--------------------------------------------------------------------
 let highscore = localStorage.getItem("highscore");
+let levelForhighscore = localStorage.getItem("levelForhighscore");
 if(highscore === null){
     highscoreval = 0;
+    levelForhighscoreVal="1";
     localStorage.setItem("highscore", JSON.stringify(highscoreval));
+    localStorage.setItem("levelForhighscore", JSON.stringify(levelForhighscoreVal));
 }
 else{
     highscoreval = JSON.parse(highscore);
+    levelForhighscoreVal = JSON.parse(levelForhighscore);
     highScoreBox.innerHTML = "High Score: " + highscore;
+    LevelForhighScoreBox.innerHTML = "For Level: " + levelForhighscore;
 }
 
 // Game Loop:
 window.requestAnimationFrame(main);
 //Using set interval method is easy but not recommended
 
-window.addEventListener('keydown', e =>{
-    inputDir = {x: 0, y: 1} //Start the Game
-    moveSound.play();
+
+// Keyboard events:
+window.addEventListener('keydown', e =>{    
     switch(e.key){
         case "ArrowUp":
-            inputDir.x = 0;
-            inputDir.y = -1;
-            console.log("ArrowUp");
+            moveUp();
             break;
         case "ArrowDown":
-            inputDir.x = 0;
-            inputDir.y = 1;
-            console.log("ArrowDown");
+            moveDown();
             break;
         case "ArrowLeft":
-            inputDir.x = -1;
-            inputDir.y = 0;
-            console.log("ArrowLeft");
+            moveLeft();
             break;
         case "ArrowRight":
-            inputDir.x = 1;
-            inputDir.y = 0;
-            console.log("ArrowRight");
+            moveRight();
             break;
         default:
+            if(inputDir.x===0 && inputDir.y===0){  //not started game yet
+                moveSound.play();
+                inputDir = {x: 0, y: -1} //move up on start
+            }
             break;
     }
 })
+// Touch Swipe Events:
+document.addEventListener('swiped-up', function(e) {
+    console.log("Swiped");  // console.log(e.target); 
+    moveUp();
+});
+document.addEventListener('swiped-down', function(e) {
+    console.log("Swiped");  // console.log(e.target); 
+    moveDown();
+});
+document.addEventListener('swiped-left', function(e) {
+    console.log("Swiped");  // console.log(e.target);     
+    moveLeft();
+});
+document.addEventListener('swiped-right', function(e) {
+    console.log("Swiped");  // console.log(e.target); 
+    moveRight();
+});
+
+//Setting diretions:
+function moveUp(){
+    if(inputDir.x===0 && inputDir.y===1 && snakeArr.length>2){
+        //going down and has length above 2, then do nothing
+    }
+    else{
+        moveSound.play();
+        inputDir.x = 0;
+        inputDir.y = -1;
+        console.log("ArrowUp");
+    }
+}
+function moveDown(){
+    if(inputDir.x===0 && inputDir.y===-1 && snakeArr.length>2){
+        //going up and has length above 2, then do nothing
+    }
+    else{
+        moveSound.play();
+        inputDir.x = 0;
+        inputDir.y = 1;
+        console.log("ArrowDown");
+    }
+}
+function moveLeft(){
+    if(inputDir.x===1 && inputDir.y===0 && snakeArr.length>2){
+        //going right and has length above 2, then do nothing
+    }
+    else{
+        moveSound.play();
+        inputDir.x = -1;
+        inputDir.y = 0;
+        console.log("ArrowLeft");
+    }
+}
+function moveRight(){
+    if(inputDir.x===-1 && inputDir.y===0 && snakeArr.length>2){
+        //going left and has length above 2, then do nothing
+    }
+    else{
+        moveSound.play();
+        inputDir.x = 1;
+        inputDir.y = 0;
+        console.log("ArrowRight");
+    }
+}
 
 
-//Main Logic Ends here
+//Main Logic Ends here-------------------------------------------------------------------
 
 
 
-// Get the modal
+// The Settings modal
 var modal = document.getElementById("settingsModal");
 
-// Get the button that opens the modal
 var btn = document.getElementById("gameSettings");
 
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal
 btn.onclick = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
 }
