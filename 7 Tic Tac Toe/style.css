@@ -122,16 +122,21 @@ footer{
     color:black;    
 }
 
-@media only screen and (max-width:950px){
+@media screen and (max-width: 950px){
     #setup-game{
         display: inline-block;
+        margin: auto;
     }
     #setup-game > *{
-        display: inline-block;
         text-align: center;
+        margin: auto;
+        padding: 0px 5px;
     }
-    button{
-        margin-top: 25px;
+    #theme-1{
+        margin-left: 26px;
+    }
+    #theme-2{
+        margin-left: 63px;
     }
     #board{
         width: 400px;
