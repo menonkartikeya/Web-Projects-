@@ -154,7 +154,7 @@ function evaluate(b) {
 	return 0
 }
 
-// moves remaining on the board or not
+// moves remcomputerning on the board or not
 function isMovesLeft(board) {
     for(let i=0;i<3;i++){
         for(let j=0;j<3;j++){
@@ -180,7 +180,7 @@ function max(x,y){
 // --------------------------------------------Frontend Major portion---------------------------
 var clicked =true;   //X begins
 var count=0;
-var AI=false;
+var computer=false;
 
 window.onload =()=>{
     //Run startGame function when button is clicked
@@ -201,10 +201,10 @@ function startGame(){
 
     //Generate puzzle based on difficulty
     if(id('player-1').checked){
-        AI = true;
+        computer = true;
     }
     else{
-        AI = false;
+        computer = false;
     }
 
     id("foot").scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -232,7 +232,7 @@ function generateBoard(){
             if(tile.innerHTML == " " && clicked==true && tile.style.cursor!="not-allowed"){
                 tile.innerHTML ="X";
                 tile.style.cursor="not-allowed";
-                if(AI == true){
+                if(computer == true){
                     let num = findBestRowAndColumn()-1;
                     if (num!=-1){
                         id(num).innerHTML = "O";
@@ -360,7 +360,7 @@ function checkIfWon(){
     // Checking if Player O won or not
     else if (b1 == 'O' && b2 == 'O' && b3 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -369,7 +369,7 @@ function checkIfWon(){
     }
     else if (b4 == 'O' && b5 == 'O' && b6 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -378,7 +378,7 @@ function checkIfWon(){
     }
     else if (b7 == 'O' && b8 == 'O' && b9 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -387,7 +387,7 @@ function checkIfWon(){
     }
     else if (b1 == 'O' && b4 == 'O' && b7 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -396,7 +396,7 @@ function checkIfWon(){
     }
     else if (b2 == 'O' && b5 == 'O' && b8 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -405,7 +405,7 @@ function checkIfWon(){
     }
     else if (b3 == 'O' && b6 == 'O' && b9 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -414,7 +414,7 @@ function checkIfWon(){
     }
     else if (b1 == 'O' && b5 == 'O' && b9 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -423,7 +423,7 @@ function checkIfWon(){
     }
     else if (b3 == 'O' && b5 == 'O' && b7 == 'O') {
         winner = true;
-        if (AI == true)
+        if (computer == true)
             id("print").textContent = "You Lost!!! Computer Won.";
         else
             id("print").textContent = " Player O won!";
@@ -520,6 +520,7 @@ function changeThemeDark(){
     qs("body").classList.add("dark");
     document.getElementsByTagName("button")[0].style.color="white";
 }
+
 
 //Helper functions
 function id(id) {
